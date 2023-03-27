@@ -1,0 +1,99 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+// Définition de la taille du tableau (3x3)
+const int ROWS = 3;
+const int COLS = 3;
+
+// Définition des symboles utilisés pour représenter les joueurs
+const char PLAYER_X = 'X';
+const char PLAYER_O = 'O';
+const char EMPTY_SPACE = ' ';
+
+// Fonction pour initialiser le tableau de jeu
+void initBoard(char board[][COLS])
+{
+    for(int i=0; i<ROWS; i++)
+    {
+        for(int j=0; j<COLS; j++)
+        {
+            board[i][j] = EMPTY_SPACE;
+        }
+    }
+}
+
+// Fonction pour afficher le tableau de jeu
+void printBoard(char board[][COLS])
+{
+    cout << "-------------" << endl;
+    for(int i=0; i<ROWS; i++)
+    {
+        cout << "| ";
+        for(int j=0; j<COLS; j++)
+        {
+            cout << board[i][j] << " | ";
+        }
+        cout << endl << "-------------" << endl;
+    }
+}
+
+// Fonction pour vérifier si un joueur a gagné
+bool checkWinner(char board[][COLS], char player)
+{
+    // Vérifier les lignes
+    for(int i=0; i<ROWS; i++)
+    {
+        if(board[i][0] == player && board[i][1] == player && board[i][2] == player)
+            return true;
+    }
+
+    // Vérifier les colonnes
+    for(int j=0; j<COLS; j++)
+    {
+        if(board[0][j] == player && board[1][j] == player && board[2][j] == player)
+            return true;
+    }
+
+    // Vérifier les diagonales
+    if(board[0][0] == player && board[1][1] == player && board[2][2] == player)
+        return true;
+
+    if(board[0][2] == player && board[1][1] == player && board[2][0] == player)
+        return true;
+
+    // Si aucune victoire n'est trouvée
+    return false;
+}
+
+// Fonction pour vérifier si le tableau de jeu est plein
+bool checkTie(char board[][COLS])
+{
+    for(int i=0; i<ROWS; i++)
+    {
+        for(int j=0; j<COLS; j++)
+        {
+            if(board[i][j] == EMPTY_SPACE)
+                return false;
+        }
+    }
+
+    // Si le tableau est plein et qu'aucune victoire n'a été trouvée
+    return true;
+}
+
+// Fonction pour permettre au joueur de faire un mouvement
+void makeMove(char board[][COLS], char player)
+{
+    int row, col;
+    cout << "Joueur " << player << ", entrez les coordonnées de votre mouvement (ligne colonne): ";
+    cin >> row >> col;
+
+    // S'assurer que les coordonnées sont valides
+    while(row < 0 || row >= ROWS || col < 0 || col >= COLS || board[row][col] != EMPTY_SPACE)
+    {
+        cout << "Mouvement invalide. Entrez les coordonnées valides (ligne colonne): ";
+        cin >> row >> col;
+    }
+
+    // Mettre à jour le tableau de jeu
